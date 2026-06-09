@@ -13,37 +13,12 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-
-class SparklerConfig {
-	private final int port;
-	private final String client_secret;
-
-	public static final Codec<SparklerConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			Codec.INT.fieldOf("port").forGetter(SparklerConfig::getPort),
-			Codec.STRING.fieldOf("client_secret").forGetter(SparklerConfig::getClientSecret))
-			.apply(instance, SparklerConfig::new));
-
-	public SparklerConfig(int port, String secret) {
-		this.port = port;
-		this.client_secret = secret;
-	}
-
-	public int getPort() {
-		return this.port;
-	}
-
-	public String getClientSecret() {
-		return this.client_secret;
-	}
-}
 
 class PairResponse {
 	String secret;
@@ -69,7 +44,7 @@ public class SparklerClient implements ClientModInitializer {
 
 	private static void sendHit(HttpClient httpClient, String host, String secret, UUID uuid, float dmg, float to) {
 		URI uri = URI.create(host + "/sparkle");
-		
+
 		Gson gson = new Gson();
 
 		HitRequest hitReq = new HitRequest(dmg * 5, 1);
@@ -127,8 +102,7 @@ public class SparklerClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		// final String HOST = "https://sparkler.myrari.net";
-		final String HOST = "http://localhost:9648";
+		final String HOST = "https://sparkler.myrari.net";
 
 		UUID uuid = Minecraft.getInstance().getGameProfile().id();
 
