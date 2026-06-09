@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "net.myrari.sparkler.mixin.client",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"PlayerHitMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}
